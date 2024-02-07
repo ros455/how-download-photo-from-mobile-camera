@@ -128,6 +128,9 @@
 // export default App;
 
 
+//------------react-webcam
+
+
 // import logo from './logo.svg';
 // import './App.css';
 // import Webcam from "react-webcam";
@@ -166,36 +169,111 @@
 // export default App;
 
 
-import React, { useRef, useCallback } from "react";
-import Webcam from "react-webcam";
+// import React, { useRef, useCallback } from "react";
+// import Webcam from "react-webcam";
 
-const videoConstraints = {
-  width: 1280,
-  height: 720,
-  facingMode: "user"
-};
+// const videoConstraints = {
+//   width: 1280,
+//   height: 720,
+//   facingMode: "user"
+// };
 
-function App() {
-  const webcamRef = useRef(null);
+// function App() {
+//   const webcamRef = useRef(null);
 
-  const capture = useCallback(() => {
-    const imageSrc = webcamRef.current.getScreenshot();
-    // Додайте код для відображення отриманого фото на сайті або збереження його.
-    // Наприклад, можна використати стан або інші методи для збереження та відображення фото.
-    console.log("Captured image:", imageSrc);
-  }, []);
+//   const capture = useCallback(() => {
+//     const imageSrc = webcamRef.current.getScreenshot();
+//     // Додайте код для відображення отриманого фото на сайті або збереження його.
+//     // Наприклад, можна використати стан або інші методи для збереження та відображення фото.
+//     console.log("Captured image:", imageSrc);
+//   }, []);
 
+//   return (
+//     <div className="App">
+//       <Webcam
+//         audio={false}
+//         height={720}
+//         screenshotFormat="image/jpeg"
+//         width={1280}
+//         videoConstraints={videoConstraints}
+//         ref={webcamRef}
+//       />
+//       <button onClick={capture}>Capture photo</button>
+//     </div>
+//   );
+// }
+
+// export default App;
+
+
+//-----------react-html5-camera-photo
+
+
+// import logo from './logo.svg';
+// import './App.css';
+
+// function App() {
+
+
+//   return (
+//     <div className="App">
+
+//     </div>
+//   );
+// }
+
+// export default App;
+
+
+// import React from 'react';
+// import Camera from 'react-html5-camera-photo';
+// import 'react-html5-camera-photo/build/css/index.css';
+
+// function App (props) {
+//   function handleTakePhoto (dataUri) {
+//     // Do stuff with the photo...
+//     console.log('takePhoto');
+//   }
+
+//   return (
+//     <Camera
+//       onTakePhoto = { (dataUri) => { handleTakePhoto(dataUri); } }
+//     />
+//   );
+// }
+
+// export default App;
+
+//-------------------
+
+import React, { useState } from 'react';
+import Camera from 'react-html5-camera-photo';
+import 'react-html5-camera-photo/build/css/index.css';
+
+// import ImagePreview from './ImagePreview'; // source code : ./src/demo/AppWithImagePreview/ImagePreview
+
+function App (props) {
+  const [dataUri, setDataUri] = useState('');
+
+  function handleTakePhotoAnimationDone (dataUri) {
+    console.log('takePhoto');
+    setDataUri(dataUri);
+  }
+
+  console.log('dataUri',dataUri);
+
+  const isFullscreen = false;
   return (
-    <div className="App">
-      <Webcam
-        audio={false}
-        height={720}
-        screenshotFormat="image/jpeg"
-        width={1280}
-        videoConstraints={videoConstraints}
-        ref={webcamRef}
-      />
-      <button onClick={capture}>Capture photo</button>
+    <div>
+      {
+        (dataUri)
+          ? 
+          // <img src='./logo192.png'/>
+          <img src={dataUri} alt="Base64 Image" />
+          : <Camera onTakePhotoAnimationDone = {handleTakePhotoAnimationDone}
+            isFullscreen={isFullscreen}
+          />
+      }
     </div>
   );
 }
