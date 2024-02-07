@@ -128,8 +128,45 @@
 // export default App;
 
 
-import logo from './logo.svg';
-import './App.css';
+// import logo from './logo.svg';
+// import './App.css';
+// import Webcam from "react-webcam";
+
+// const videoConstraints = {
+//   width: 1280,
+//   height: 720,
+//   facingMode: "user"
+// };
+
+// function App() {
+
+//   return (
+//     <div className="App">
+//   <Webcam
+//     audio={false}
+//     height={720}
+//     screenshotFormat="image/jpeg"
+//     width={1280}
+//     videoConstraints={videoConstraints}
+//   >
+//     {({ getScreenshot }) => (
+//       <button
+//         onClick={() => {
+//           const imageSrc = getScreenshot()
+//         }}
+//       >
+//         Capture photo
+//       </button>
+//     )}
+//   </Webcam>
+//     </div>
+//   );
+// }
+
+// export default App;
+
+
+import React, { useRef, useCallback } from "react";
 import Webcam from "react-webcam";
 
 const videoConstraints = {
@@ -139,26 +176,26 @@ const videoConstraints = {
 };
 
 function App() {
+  const webcamRef = useRef(null);
+
+  const capture = useCallback(() => {
+    const imageSrc = webcamRef.current.getScreenshot();
+    // Додайте код для відображення отриманого фото на сайті або збереження його.
+    // Наприклад, можна використати стан або інші методи для збереження та відображення фото.
+    console.log("Captured image:", imageSrc);
+  }, []);
 
   return (
     <div className="App">
-  <Webcam
-    audio={false}
-    height={720}
-    screenshotFormat="image/jpeg"
-    width={1280}
-    videoConstraints={videoConstraints}
-  >
-    {({ getScreenshot }) => (
-      <button
-        onClick={() => {
-          const imageSrc = getScreenshot()
-        }}
-      >
-        Capture photo
-      </button>
-    )}
-  </Webcam>
+      <Webcam
+        audio={false}
+        height={720}
+        screenshotFormat="image/jpeg"
+        width={1280}
+        videoConstraints={videoConstraints}
+        ref={webcamRef}
+      />
+      <button onClick={capture}>Capture photo</button>
     </div>
   );
 }
