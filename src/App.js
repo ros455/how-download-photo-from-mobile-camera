@@ -246,34 +246,72 @@
 
 //-------------------
 
+// import React, { useState } from 'react';
+// import Camera from 'react-html5-camera-photo';
+// import 'react-html5-camera-photo/build/css/index.css';
+
+// function App (props) {
+//   const [dataUri, setDataUri] = useState('');
+
+//   function handleTakePhotoAnimationDone (dataUri) {
+//     console.log('takePhoto');
+//     setDataUri(dataUri);
+//   }
+
+//   console.log('dataUri',dataUri);
+
+//   const isFullscreen = false;
+//   return (
+//     <div>
+//       {
+//         (dataUri)
+//           ? 
+//           // <img src='./logo192.png'/>
+//           <img src={dataUri} alt="Base64 Image" />
+//           : <Camera onTakePhotoAnimationDone = {handleTakePhotoAnimationDone}
+//             isFullscreen={isFullscreen}
+//           />
+//       }
+//     </div>
+//   );
+// }
+
+// export default App;
+
 import React, { useState } from 'react';
 import Camera from 'react-html5-camera-photo';
 import 'react-html5-camera-photo/build/css/index.css';
 
-// import ImagePreview from './ImagePreview'; // source code : ./src/demo/AppWithImagePreview/ImagePreview
-
-function App (props) {
+function App() {
   const [dataUri, setDataUri] = useState('');
+  const [idealFacingMode, setIdealFacingMode] = useState('user'); // 'user' for front camera, 'environment' for back camera
 
-  function handleTakePhotoAnimationDone (dataUri) {
+  function handleTakePhotoAnimationDone(dataUri) {
     console.log('takePhoto');
     setDataUri(dataUri);
   }
 
-  console.log('dataUri',dataUri);
-
   const isFullscreen = false;
+
+  const switchCamera = () => {
+    setIdealFacingMode((prevMode) => (prevMode === 'user' ? 'environment' : 'user'));
+  };
+
   return (
     <div>
-      {
-        (dataUri)
-          ? 
-          // <img src='./logo192.png'/>
-          <img src={dataUri} alt="Base64 Image" />
-          : <Camera onTakePhotoAnimationDone = {handleTakePhotoAnimationDone}
+      {dataUri ? (
+        <img src={dataUri} alt="Base64 Image" />
+      ) : (
+        <div>
+          <Camera
+            onTakePhotoAnimationDone={handleTakePhotoAnimationDone}
             isFullscreen={isFullscreen}
+            idealFacingMode={idealFacingMode}
+            idealResolution={{ width: 1920, height: 1080 }}
           />
-      }
+          <button onClick={switchCamera}>Switch Camera</button>
+        </div>
+      )}
     </div>
   );
 }
