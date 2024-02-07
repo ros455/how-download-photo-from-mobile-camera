@@ -78,49 +78,87 @@
 // export default App;
 
 
-import { useState } from 'react';
+// import { useState } from 'react';
+// import logo from './logo.svg';
+// import './App.css';
+
+// function App() {
+//   const [photoSrc, setPhotoSrc] = useState(null);
+
+//   const handleCameraInput = async () => {
+//     try {
+//       const stream = await navigator.mediaDevices.getUserMedia({ video: true });
+//       const videoElement = document.getElementById('cameraVideo');
+
+//       // Встановлюємо відеопотік у відеоелемент
+//       videoElement.srcObject = stream;
+
+//       // Очікуємо, коли відеопотік буде готовий до відтворення
+//       videoElement.onloadedmetadata = () => {
+//         videoElement.play();
+
+//         // Створюємо елемент canvas для обробки зображення
+//         const canvasElement = document.createElement('canvas');
+//         canvasElement.width = videoElement.videoWidth;
+//         canvasElement.height = videoElement.videoHeight;
+//         const canvasContext = canvasElement.getContext('2d');
+
+//         // Очікуємо кадр відео та копіюємо його на canvas
+//         videoElement.addEventListener('loadeddata', () => {
+//           canvasContext.drawImage(videoElement, 0, 0, canvasElement.width, canvasElement.height);
+//           const photoDataUrl = canvasElement.toDataURL('image/jpeg'); // отримуємо base64-представлення фото
+//           setPhotoSrc(photoDataUrl); // встановлюємо фото в стан компонента
+//           stream.getTracks().forEach(track => track.stop()); // зупиняємо відеопотік
+//         });
+//       };
+//     } catch (error) {
+//       console.error('Помилка при відкритті камери:', error);
+//     }
+//   };
+
+//   return (
+//     <div className="App">
+//       <button onClick={handleCameraInput}>Відкрити камеру</button>
+//       <video id="cameraVideo" width="640" height="480" style={{ display: photoSrc ? 'none' : 'block' }}></video>
+//       {photoSrc && <img src={photoSrc} alt="Зображення з камери" />}
+//     </div>
+//   );
+// }
+
+// export default App;
+
+
 import logo from './logo.svg';
 import './App.css';
+import Webcam from "react-webcam";
+
+const videoConstraints = {
+  width: 1280,
+  height: 720,
+  facingMode: "user"
+};
 
 function App() {
-  const [photoSrc, setPhotoSrc] = useState(null);
-
-  const handleCameraInput = async () => {
-    try {
-      const stream = await navigator.mediaDevices.getUserMedia({ video: true });
-      const videoElement = document.getElementById('cameraVideo');
-
-      // Встановлюємо відеопотік у відеоелемент
-      videoElement.srcObject = stream;
-
-      // Очікуємо, коли відеопотік буде готовий до відтворення
-      videoElement.onloadedmetadata = () => {
-        videoElement.play();
-
-        // Створюємо елемент canvas для обробки зображення
-        const canvasElement = document.createElement('canvas');
-        canvasElement.width = videoElement.videoWidth;
-        canvasElement.height = videoElement.videoHeight;
-        const canvasContext = canvasElement.getContext('2d');
-
-        // Очікуємо кадр відео та копіюємо його на canvas
-        videoElement.addEventListener('loadeddata', () => {
-          canvasContext.drawImage(videoElement, 0, 0, canvasElement.width, canvasElement.height);
-          const photoDataUrl = canvasElement.toDataURL('image/jpeg'); // отримуємо base64-представлення фото
-          setPhotoSrc(photoDataUrl); // встановлюємо фото в стан компонента
-          stream.getTracks().forEach(track => track.stop()); // зупиняємо відеопотік
-        });
-      };
-    } catch (error) {
-      console.error('Помилка при відкритті камери:', error);
-    }
-  };
 
   return (
     <div className="App">
-      <button onClick={handleCameraInput}>Відкрити камеру</button>
-      <video id="cameraVideo" width="640" height="480" style={{ display: photoSrc ? 'none' : 'block' }}></video>
-      {photoSrc && <img src={photoSrc} alt="Зображення з камери" />}
+  <Webcam
+    audio={false}
+    height={720}
+    screenshotFormat="image/jpeg"
+    width={1280}
+    videoConstraints={videoConstraints}
+  >
+    {({ getScreenshot }) => (
+      <button
+        onClick={() => {
+          const imageSrc = getScreenshot()
+        }}
+      >
+        Capture photo
+      </button>
+    )}
+  </Webcam>
     </div>
   );
 }
