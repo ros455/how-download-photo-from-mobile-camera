@@ -306,8 +306,8 @@ function App() {
           <Camera
             onTakePhotoAnimationDone={handleTakePhotoAnimationDone}
             isFullscreen={isFullscreen}
-            // idealFacingMode={idealFacingMode}
-            idealResolution={{ width: 1920, height: 1080 }}
+            idealFacingMode={idealFacingMode}
+            // idealResolution={{ width: 1920, height: 1080 }}
           />
           <button onClick={switchCamera}>Switch Camera</button>
         </div>
