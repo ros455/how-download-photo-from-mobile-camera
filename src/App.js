@@ -278,40 +278,81 @@
 
 // export default App;
 
+// import React, { useState } from 'react';
+// import Camera from 'react-html5-camera-photo';
+// import 'react-html5-camera-photo/build/css/index.css';
+
+// function App() {
+//   const [dataUri, setDataUri] = useState('');
+//   const [idealFacingMode, setIdealFacingMode] = useState('user'); // 'user' for front camera, 'environment' for back camera
+
+//   function handleTakePhotoAnimationDone(dataUri) {
+//     console.log('takePhoto');
+//     setDataUri(dataUri);
+//   }
+
+//   const isFullscreen = false;
+
+//   const switchCamera = () => {
+//     setIdealFacingMode((prevMode) => (prevMode === 'user' ? 'environment' : 'user'));
+//   };
+
+//   return (
+//     <div>
+//       {dataUri ? (
+//         <img src={dataUri} alt="Base64 Image" />
+//       ) : (
+//         <div>
+//           <Camera
+//             onTakePhotoAnimationDone={handleTakePhotoAnimationDone}
+//             isFullscreen={isFullscreen}
+//             idealFacingMode={idealFacingMode}
+//           />
+//           <button onClick={switchCamera}>Switch Camera</button>
+//         </div>
+//       )}
+//     </div>
+//   );
+// }
+
+// export default App;
+
 import React, { useState } from 'react';
 import Camera from 'react-html5-camera-photo';
 import 'react-html5-camera-photo/build/css/index.css';
 
 function App() {
-  const [dataUri, setDataUri] = useState('');
+  const [photos, setPhotos] = useState([]);
   const [idealFacingMode, setIdealFacingMode] = useState('user'); // 'user' for front camera, 'environment' for back camera
 
-  function handleTakePhotoAnimationDone(dataUri) {
+  const handleTakePhotoAnimationDone = (dataUri) => {
     console.log('takePhoto');
-    setDataUri(dataUri);
-  }
-
-  const isFullscreen = false;
+    setPhotos((prevPhotos) => [...prevPhotos, dataUri]);
+  };
 
   const switchCamera = () => {
     setIdealFacingMode((prevMode) => (prevMode === 'user' ? 'environment' : 'user'));
   };
 
+  const handleDeletePhoto = (index) => {
+    setPhotos((prevPhotos) => prevPhotos.filter((_, i) => i !== index));
+  };
+
   return (
     <div>
-      {dataUri ? (
-        <img src={dataUri} alt="Base64 Image" />
-      ) : (
-        <div>
-          <Camera
-            onTakePhotoAnimationDone={handleTakePhotoAnimationDone}
-            isFullscreen={isFullscreen}
-            idealFacingMode={idealFacingMode}
-            // idealResolution={{ width: 1920, height: 1080 }}
-          />
-          <button onClick={switchCamera}>Switch Camera</button>
+      <div>
+        <Camera
+          onTakePhotoAnimationDone={handleTakePhotoAnimationDone}
+          idealFacingMode={idealFacingMode}
+        />
+        <button onClick={switchCamera}>Switch Camera</button>
+      </div>
+      {photos.map((photo, index) => (
+        <div key={index}>
+          <img src={photo} alt={`Photo ${index}`} />
+          <button onClick={() => handleDeletePhoto(index)}>Delete</button>
         </div>
-      )}
+      ))}
     </div>
   );
 }
