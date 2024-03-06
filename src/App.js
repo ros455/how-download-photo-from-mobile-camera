@@ -36,7 +36,7 @@ function App() {
     //   ))}
     // </div>
     <a href={`tel:${phoneNumber}`}>
-    <OutputADSvgSelector id={"phoneBlack"}/>
+    {/* <OutputADSvgSelector id={"phoneBlack"}/> */}
     <span>Подзвонити</span>
 </a>
   );
